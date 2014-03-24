@@ -5,8 +5,8 @@ Backoff algorithms are used to space out repeated retries of the same block of c
 
 This library provides the following backoff algorithms:
 
-1. `ExponentialBackoff`
-2. `FibonacciBackoff`
+1. `Exponential`
+2. `Fibonacci`
 3. `MILD`
 4. `PLEB`
 5. `PFB`
