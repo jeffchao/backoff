@@ -6,18 +6,18 @@ import (
 )
 
 type ExponentialBackoff struct {
-	Retries             int
-	MaxRetries          int
-	Delay               time.Duration
-	Interval            time.Duration
+	Retries    int
+	MaxRetries int
+	Delay      time.Duration
+	Interval   time.Duration
 }
 
 func Exponential() *ExponentialBackoff {
 	return &ExponentialBackoff{
-		Retries:             0,
-		MaxRetries:          5,
-		Delay:               time.Duration(0),
-		Interval:            time.Duration(1 * time.Second),
+		Retries:    0,
+		MaxRetries: 5,
+		Delay:      time.Duration(0),
+		Interval:   time.Duration(1 * time.Second),
 	}
 }
 

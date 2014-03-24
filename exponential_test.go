@@ -1,9 +1,9 @@
 package backoff
 
 import (
+	"errors"
 	"testing"
 	"time"
-  "errors"
 )
 
 func TestNextExponentialBackoff(t *testing.T) {
@@ -25,39 +25,39 @@ func TestNextExponentialBackoff(t *testing.T) {
 }
 
 func TestRetryExponential(t *testing.T) {
-  e := Exponential()
-  e.Interval = 1 * time.Millisecond
-  e.MaxRetries = 5
+	e := Exponential()
+	e.Interval = 1 * time.Millisecond
+	e.MaxRetries = 5
 
-  retries := 0
+	retries := 0
 
-  test := func () error {
-    retries++
-    return errors.New("an error occurred")
-  }
-  e.Retry(test)
+	test := func() error {
+		retries++
+		return errors.New("an error occurred")
+	}
+	e.Retry(test)
 
-  if retries != e.Retries {
-    t.Errorf("retries count does not match e.Retries: got %d, expected %d", retries, e.Retries)
-  }
+	if retries != e.Retries {
+		t.Errorf("retries count does not match e.Retries: got %d, expected %d", retries, e.Retries)
+	}
 
-  if e.Retries > e.MaxRetries {
-    t.Errorf("overflow: retries %d greater than maximum retries %d", e.Retries, e.MaxRetries)
-  }
+	if e.Retries > e.MaxRetries {
+		t.Errorf("overflow: retries %d greater than maximum retries %d", e.Retries, e.MaxRetries)
+	}
 
-  e.Reset()
-  retries = 0
+	e.Reset()
+	retries = 0
 
-  test = func () error {
-    retries++
-    return nil
-  }
+	test = func() error {
+		retries++
+		return nil
+	}
 
-  err := e.Retry(test)
+	err := e.Retry(test)
 
-  if e.Retries > 0 && err != nil {
-    t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
-  }
+	if e.Retries > 0 && err != nil {
+		t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
+	}
 }
 
 func TestResetExponential(t *testing.T) {
