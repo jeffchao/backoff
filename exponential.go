@@ -9,8 +9,8 @@ type ExponentialBackoff struct {
 	Retries    int
 	MaxRetries int
 	Delay      time.Duration
-  // The interval may be overridden later to be time.Second, time.Millisecond, etc.
-	Interval   time.Duration
+	// The interval may be overridden later to be time.Second, time.Millisecond, etc.
+	Interval time.Duration
 }
 
 // Creates a new instance of ExponentialBackoff.
@@ -24,8 +24,8 @@ func Exponential() *ExponentialBackoff {
 }
 
 /*
-Gets the next backoff delay. This method will increment the retries and check 
-if the maximum number of retries has been met. If this condition is satisfied, then 
+Gets the next backoff delay. This method will increment the retries and check
+if the maximum number of retries has been met. If this condition is satisfied, then
 the function will return. Otherwise, the next backoff delay will be computed.
 
 The exponential backoff delay is computed as follows:
@@ -53,8 +53,8 @@ func (self *ExponentialBackoff) Next() bool {
 }
 
 /*
-Retries a function until the maximum number of retries is met. This method expects 
-the function `f` to return an error. If the failure condition is met, this method 
+Retries a function until the maximum number of retries is met. This method expects
+the function `f` to return an error. If the failure condition is met, this method
 will surface the error outputted from `f`, otherwise nil will be returned as normal.
 */
 func (self *ExponentialBackoff) Retry(f func() error) error {
