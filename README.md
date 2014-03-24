@@ -54,6 +54,7 @@ fooFunc := func() error {
 }
 
 err := e.Retry(fooFunc)
+e.Reset()
 ```
 
 ### Fibonacci Backoff
