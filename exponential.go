@@ -9,8 +9,7 @@ type ExponentialBackoff struct {
 	Retries    int
 	MaxRetries int
 	Delay      time.Duration
-	// The interval may be overridden later to be time.Second, time.Millisecond, etc.
-	Interval time.Duration
+	Interval   time.Duration // time.Second, time.Millisecond, etc.
 }
 
 // Creates a new instance of ExponentialBackoff.
