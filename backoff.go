@@ -1,3 +1,4 @@
+// Utility to retry functions with support from a variety of backoff algorithms.
 package backoff
 
 type Backoff interface {
