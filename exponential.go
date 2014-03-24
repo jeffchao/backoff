@@ -6,7 +6,6 @@ import (
 )
 
 type ExponentialBackoff struct {
-	RandomizationFactor float64
 	Retries             int
 	MaxRetries          int
 	Delay               time.Duration
@@ -15,7 +14,6 @@ type ExponentialBackoff struct {
 
 func Exponential() *ExponentialBackoff {
 	return &ExponentialBackoff{
-		RandomizationFactor: 0.5,
 		Retries:             0,
 		MaxRetries:          5,
 		Delay:               time.Duration(0),
