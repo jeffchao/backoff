@@ -26,7 +26,7 @@ Next gets the next backoff delay. This method will increment the retries and che
 if the maximum number of retries has been met. If this condition is satisfied, then
 the function will return. Otherwise, the next backoff delay will be computed.
 
-The exponential backoff delay is computed as follows:
+The fibonacci backoff delay is computed as follows:
 `n = fib(c - 1) + fib(c - 2); f(0) = 0, f(1) = 1; n >= 0.` where
 `n` is the backoff delay and `c` is the retry slot.
 
