@@ -59,10 +59,25 @@ e.Reset()
 
 ### Fibonacci Backoff
 
-WIP
+Gradually decrease the retry rate using a fibonacci sequence. The algorithm is defined as `n = fib(c - 1) + fib(c - 2); f(0) = 0, f(1) = 1; n >= 0` where `n` is the backoff delay and `c` is the retry slot.
 
 ```go
-WIP
+f := backoff.Fibonacci()
+f.Interval = 1 * time.Millisecond
+f.MaxRetries = 5
+
+fooFunc := func() error {
+        // Do some work here
+}
+
+err := f.Retry(fooFunc)
+f.Reset()
+```
+
+Additionally, the `FibonacciBackoff` struct exposes its delay slots in the form of a slice of `time.Duration`.
+
+```go
+log.Printf("%+v", f.Slots)
 ```
 
 ### MILD - Multiplicative Increase and Linear Decrease
