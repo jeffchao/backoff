@@ -1,4 +1,4 @@
-// Utility to retry functions with support from a variety of backoff algorithms.
+// Package backoff is a utility for repeatedly retrying functions with support from a variety of backoff algorithms.
 package backoff
 
 type Backoff interface {

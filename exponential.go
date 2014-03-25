@@ -12,7 +12,7 @@ type ExponentialBackoff struct {
 	Interval   time.Duration // time.Second, time.Millisecond, etc.
 }
 
-// Creates a new instance of ExponentialBackoff.
+// Exponential creates a new instance of ExponentialBackoff.
 func Exponential() *ExponentialBackoff {
 	return &ExponentialBackoff{
 		Retries:    0,
@@ -23,7 +23,7 @@ func Exponential() *ExponentialBackoff {
 }
 
 /*
-Gets the next backoff delay. This method will increment the retries and check
+Next gets the next backoff delay. This method will increment the retries and check
 if the maximum number of retries has been met. If this condition is satisfied, then
 the function will return. Otherwise, the next backoff delay will be computed.
 
@@ -52,7 +52,7 @@ func (self *ExponentialBackoff) Next() bool {
 }
 
 /*
-Retries a function until the maximum number of retries is met. This method expects
+Retry will retry a function until the maximum number of retries is met. This method expects
 the function `f` to return an error. If the failure condition is met, this method
 will surface the error outputted from `f`, otherwise nil will be returned as normal.
 */
@@ -74,7 +74,7 @@ func (self *ExponentialBackoff) Retry(f func() error) error {
 	return err
 }
 
-// Resets the retry count and the backoff delay back to its initial state.
+// Reset will reset the retry count and the backoff delay back to its initial state.
 func (self *ExponentialBackoff) Reset() {
 	self.Retries = 0
 	self.Delay = time.Duration(0 * time.Second)
