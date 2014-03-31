@@ -2,6 +2,7 @@ backoff
 =======
 
 [![Build Status](https://travis-ci.org/jeffchao/backoff.svg?branch=master)](https://travis-ci.org/jeffchao/backoff)
+[![GoDoc](https://godoc.org/github.com/jeffchao/backoff?status.png)](https://godoc.org/github.com/jeffchao/backoff)
 
 Backoff algorithms are used to space out repeated retries of the same block of code. By gradually decreasing the retry rate, backoff algorithms aim to avoid congestion. This Go backoff library provides a set of backoff algorithms well-known in the computer networks research community. These algorithms are acceptable for use in generalized computation. All algorithms use a uniform distribution of backoff times.
 
