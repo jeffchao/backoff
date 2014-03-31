@@ -29,7 +29,7 @@ the function will return. Otherwise, the next backoff delay will be computed.
 The MILD backoff delay is computed as follows:
 `n = min(1.5 * n, len(slots)) upon failure; n = max(slots(c) - 1, 0) upon success;
 n(0) = 0, n(1) = 1`
-where `n` is the backoff delay, `c` is the retry slot, and `slots` is an array of retries.
+where `n` is the backoff delay, `c` is the retry slot, and `slots` is an array of retry delays.
 
 This means a method must repeatedly succeed until `slots` is empty for the overall
 backoff mechanism to terminate. Conversely, a repeated number of failures until the
