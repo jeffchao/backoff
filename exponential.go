@@ -39,14 +39,14 @@ Example, given a 1 second interval:
     3                   7
     4                   15
 */
-func (self *ExponentialBackoff) Next() bool {
-	self.Retries++
+func (e *ExponentialBackoff) Next() bool {
+	e.Retries++
 
-	if self.Retries >= self.MaxRetries {
+	if e.Retries >= e.MaxRetries {
 		return false
 	}
 
-	self.Delay = time.Duration(math.Pow(2, float64(self.Retries))-1) * self.Interval
+	e.Delay = time.Duration(math.Pow(2, float64(e.Retries))-1) * e.Interval
 
 	return true
 }
@@ -56,26 +56,26 @@ Retry will retry a function until the maximum number of retries is met. This met
 the function `f` to return an error. If the failure condition is met, this method
 will surface the error outputted from `f`, otherwise nil will be returned as normal.
 */
-func (self *ExponentialBackoff) Retry(f func() error) error {
+func (e *ExponentialBackoff) Retry(f func() error) error {
 	err := f()
 
 	if err == nil {
 		return nil
 	}
 
-	for self.Next() {
+	for e.Next() {
 		if err = f(); err == nil {
 			return nil
 		}
 
-		time.Sleep(self.Delay)
+		time.Sleep(e.Delay)
 	}
 
 	return err
 }
 
 // Reset will reset the retry count and the backoff delay back to its initial state.
-func (self *ExponentialBackoff) Reset() {
-	self.Retries = 0
-	self.Delay = time.Duration(0 * time.Second)
+func (e *ExponentialBackoff) Reset() {
+	e.Retries = 0
+	e.Delay = time.Duration(0 * time.Second)
 }
