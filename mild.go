@@ -51,12 +51,12 @@ Example, given a 1 second interval, with max retries of 5:
     4                   0                             success
     5                   -                             success
 */
-func (self *MILDBackoff) Next() bool {
-	if self.Retries >= self.MaxRetries {
+func (m *MILDBackoff) Next() bool {
+	if m.Retries >= m.MaxRetries {
 		return false
 	}
 
-	self.increment()
+	m.increment()
 
 	return true
 }
@@ -66,51 +66,51 @@ Retry will retry a function until the maximum number of retries is met. This met
 the function `f` to return an error. If the failure condition is met, this method
 will surface the error outputted from `f`, otherwise nil will be returned as normal.
 */
-func (self *MILDBackoff) Retry(f func() error) error {
+func (m *MILDBackoff) Retry(f func() error) error {
 	err := f()
 
 	if err == nil {
 		return nil
 	}
 
-	for self.Next() {
+	for m.Next() {
 		if err := f(); err == nil {
-			if len(self.Slots) == 0 {
+			if len(m.Slots) == 0 {
 				return nil
 			}
-			self.decrement()
+			m.decrement()
 		}
 
-		time.Sleep(self.Delay)
+		time.Sleep(m.Delay)
 	}
 
 	return err
 }
 
-func (self *MILDBackoff) increment() {
-	self.Retries++
+func (m *MILDBackoff) increment() {
+	m.Retries++
 
-	if self.Delay == 0 {
-		self.Delay = time.Duration(1 * self.Interval)
+	if m.Delay == 0 {
+		m.Delay = time.Duration(1 * m.Interval)
 	} else {
-		self.Delay = self.Delay + (self.Delay / 2)
+		m.Delay = m.Delay + (m.Delay / 2)
 	}
 
-	self.Slots = append(self.Slots, self.Delay)
+	m.Slots = append(m.Slots, m.Delay)
 }
 
-func (self *MILDBackoff) decrement() {
-	copy(self.Slots[len(self.Slots)-1:], self.Slots[len(self.Slots):])
-	self.Slots[len(self.Slots)-1] = time.Duration(0 * self.Interval)
-	self.Slots = self.Slots[:len(self.Slots)-1]
-	self.Retries--
-	self.Delay = self.Slots[len(self.Slots)-1]
+func (m *MILDBackoff) decrement() {
+	copy(m.Slots[len(m.Slots)-1:], m.Slots[len(m.Slots):])
+	m.Slots[len(m.Slots)-1] = time.Duration(0 * m.Interval)
+	m.Slots = m.Slots[:len(m.Slots)-1]
+	m.Retries--
+	m.Delay = m.Slots[len(m.Slots)-1]
 }
 
 // Reset will reset the retry count, the backoff delay, and backoff slots back to its initial state.
-func (self *MILDBackoff) Reset() {
-	self.Retries = 0
-	self.Delay = time.Duration(0 * time.Second)
-	self.Slots = nil
-	self.Slots = make([]time.Duration, 0, self.MaxRetries)
+func (m *MILDBackoff) Reset() {
+	m.Retries = 0
+	m.Delay = time.Duration(0 * time.Second)
+	m.Slots = nil
+	m.Slots = make([]time.Duration, 0, m.MaxRetries)
 }
