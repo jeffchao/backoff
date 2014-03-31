@@ -51,7 +51,6 @@ func (self *FibonacciBackoff) Next() bool {
 		return false
 	}
 
-	// Add to Slot capacity, calculate new fib value, add it to the slice.
 	if self.Retries == 1 {
 		self.Slots = append(self.Slots, time.Duration(0*self.Interval))
 		self.Slots = append(self.Slots, time.Duration(1*self.Interval))
