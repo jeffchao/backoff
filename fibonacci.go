@@ -44,20 +44,20 @@ Example, given a 1 second interval:
     6                   8
     7                   13
 */
-func (self *FibonacciBackoff) Next() bool {
-	self.Retries++
+func (fb *FibonacciBackoff) Next() bool {
+	fb.Retries++
 
-	if self.Retries >= self.MaxRetries {
+	if fb.Retries >= fb.MaxRetries {
 		return false
 	}
 
-	if self.Retries == 1 {
-		self.Slots = append(self.Slots, time.Duration(0*self.Interval))
-		self.Slots = append(self.Slots, time.Duration(1*self.Interval))
-		self.Delay = time.Duration(1 * self.Interval)
+	if fb.Retries == 1 {
+		fb.Slots = append(fb.Slots, time.Duration(0*fb.Interval))
+		fb.Slots = append(fb.Slots, time.Duration(1*fb.Interval))
+		fb.Delay = time.Duration(1 * fb.Interval)
 	} else {
-		self.Delay = self.Slots[self.Retries-1] + self.Slots[self.Retries-2]
-		self.Slots = append(self.Slots, self.Delay)
+		fb.Delay = fb.Slots[fb.Retries-1] + fb.Slots[fb.Retries-2]
+		fb.Slots = append(fb.Slots, fb.Delay)
 	}
 
 	return true
@@ -68,28 +68,28 @@ Retry will retry a function until the maximum number of retries is met. This met
 the function `f` to return an error. If the failure condition is met, this method
 will surface the error outputted from `f`, otherwise nil will be returned as normal.
 */
-func (self *FibonacciBackoff) Retry(f func() error) error {
+func (fb *FibonacciBackoff) Retry(f func() error) error {
 	err := f()
 
 	if err == nil {
 		return nil
 	}
 
-	for self.Next() {
+	for fb.Next() {
 		if err := f(); err == nil {
 			return nil
 		}
 
-		time.Sleep(self.Delay)
+		time.Sleep(fb.Delay)
 	}
 
 	return err
 }
 
 // Reset will reset the retry count, the backoff delay, and backoff slots back to its initial state.
-func (self *FibonacciBackoff) Reset() {
-	self.Retries = 0
-	self.Delay = time.Duration(0 * time.Second)
-	self.Slots = nil
-	self.Slots = append(self.Slots, time.Duration(0*self.Interval))
+func (fb *FibonacciBackoff) Reset() {
+	fb.Retries = 0
+	fb.Delay = time.Duration(0 * time.Second)
+	fb.Slots = nil
+	fb.Slots = append(fb.Slots, time.Duration(0*fb.Interval))
 }
