@@ -58,6 +58,22 @@ func TestRetryExponential(t *testing.T) {
 	if e.Retries > 0 && err != nil {
 		t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
 	}
+
+  test = func() error {
+    if retries == 0 {
+      retries++
+      return errors.New("an error occurred")
+    }
+
+    return nil
+  }
+
+  e.Reset()
+  retries = 0
+  err = e.Retry(test)
+  if err != nil {
+    t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
+  }
 }
 
 func TestResetExponential(t *testing.T) {
