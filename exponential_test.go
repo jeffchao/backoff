@@ -59,21 +59,21 @@ func TestRetryExponential(t *testing.T) {
 		t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
 	}
 
-  test = func() error {
-    if retries == 0 {
-      retries++
-      return errors.New("an error occurred")
-    }
+	test = func() error {
+		if retries == 0 {
+			retries++
+			return errors.New("an error occurred")
+		}
 
-    return nil
-  }
+		return nil
+	}
 
-  e.Reset()
-  retries = 0
-  err = e.Retry(test)
-  if err != nil {
-    t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
-  }
+	e.Reset()
+	retries = 0
+	err = e.Retry(test)
+	if err != nil {
+		t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
+	}
 }
 
 func TestResetExponential(t *testing.T) {
@@ -87,10 +87,4 @@ func TestResetExponential(t *testing.T) {
 	e.Reset()
 	assertEquals(t, e.Retries, 0)
 	assertEquals(t, e.Delay, time.Duration(0*time.Second))
-}
-
-func assertEquals(t *testing.T, expected interface{}, actual interface{}) {
-	if expected != actual {
-		t.Errorf("error. got %d, expected: %d", actual, expected)
-	}
 }
