@@ -4,6 +4,12 @@ import (
 	"time"
 )
 
+/*
+MILDBackoff implements the Backoff interface. It represents an
+instance that keeps track of retries, delays, and intervals for the
+fibonacci backoff algorithm. This struct is instantiated by
+the MILD() function.
+*/
 type MILDBackoff struct {
 	Retries    int
 	MaxRetries int
