@@ -20,3 +20,16 @@ _cgo_export.*
 _testmain.go
 
 *.exe
+
+# OS X
+.DS_Store
+.Spotlight-v100
+.Trashes
+*.app
+*.cxx
+
+# Linux
+*.swp
+*.swo
+.*.sw[a-z]
+*.un~
