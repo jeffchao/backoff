@@ -53,18 +53,21 @@ Example, given a 1 second interval:
 func (fb *FibonacciBackoff) Next() bool {
 	fb.Retries++
 
-	if fb.Retries >= fb.MaxRetries {
+	if fb.Retries > fb.MaxRetries {
 		return false
 	}
 
-	if fb.Retries == 1 {
+  switch fb.Retries {
+  case 1:
 		fb.Slots = append(fb.Slots, time.Duration(0*fb.Interval))
+		fb.Delay = time.Duration(0 * fb.Interval)
+  case 2:
 		fb.Slots = append(fb.Slots, time.Duration(1*fb.Interval))
 		fb.Delay = time.Duration(1 * fb.Interval)
-	} else {
-		fb.Delay = fb.Slots[fb.Retries-1] + fb.Slots[fb.Retries-2]
+  default:
+		fb.Delay = fb.Slots[fb.Retries-2] + fb.Slots[fb.Retries-3]
 		fb.Slots = append(fb.Slots, fb.Delay)
-	}
+  }
 
 	return true
 }
@@ -97,5 +100,4 @@ func (fb *FibonacciBackoff) Reset() {
 	fb.Retries = 0
 	fb.Delay = time.Duration(0 * time.Second)
 	fb.Slots = nil
-	fb.Slots = append(fb.Slots, time.Duration(0*fb.Interval))
 }
