@@ -83,7 +83,7 @@ log.Printf("%+v", f.Slots)
 
 ### MILD - Multiplicative Increase and Linear Decrease
 
-Gradually increase the retry delay by a factor of 1.5. However, upon successful transmission, decrement the index of the delay slots so that the current delay is the previous value. The retry mechanism thus will not result in a success until the slot index has been decremented to 0. Conversely, the retry mechanism will fail as usual upon reaching the failed maximum number of retries. The algorithm is defined as follows: `n = min(1.5, n, len(slots)) upon failure; n = max(slots(c) - 1, 0) upon success; n(0) = 0, n(1) = 1` where `n` is the backoff delay, `c` is the retry slot, and `slots` is an array of retry delays.
+Gradually increase the retry delay by a factor of 1.5. However, upon successful transmission, decrement the index of the delay slots so that the current delay is the previous value. The retry mechanism thus will not result in a success until the slot index has been decremented to 0. Conversely, the retry mechanism will fail as usual, upon reaching the failed maximum number of retries. The algorithm is defined as follows: `n = min(1.5, n, len(slots)) upon failure; n = max(slots(c) - 1, 0) upon success; n(0) = 0, n(1) = 1` where `n` is the backoff delay, `c` is the retry slot, and `slots` is an array of retry delays.
 
 
 ```go
