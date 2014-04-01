@@ -22,3 +22,22 @@ func TestNextFibonacciBackoff(t *testing.T) {
 		assertEquals(t, expectedDelays[i], f.Delay)
 	}
 }
+
+func TestRetryFibonacci(t *testing.T) {
+}
+
+func TestResetFibonacci(t *testing.T) {
+	f := Fibonacci()
+	f.Interval = 1 * time.Second
+	f.MaxRetries = 5
+
+	for i := 0; i < 4; i++ {
+		f.Next()
+	}
+
+	assertEquals(t, f.Retries, 4)
+	assertEquals(t, f.Delay, time.Duration(2*time.Second))
+	f.Reset()
+	assertEquals(t, f.Retries, 0)
+	assertEquals(t, f.Delay, time.Duration(0*time.Second))
+}

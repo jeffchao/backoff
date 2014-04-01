@@ -57,17 +57,17 @@ func (fb *FibonacciBackoff) Next() bool {
 		return false
 	}
 
-  switch fb.Retries {
-  case 1:
+	switch fb.Retries {
+	case 1:
 		fb.Slots = append(fb.Slots, time.Duration(0*fb.Interval))
 		fb.Delay = time.Duration(0 * fb.Interval)
-  case 2:
+	case 2:
 		fb.Slots = append(fb.Slots, time.Duration(1*fb.Interval))
 		fb.Delay = time.Duration(1 * fb.Interval)
-  default:
+	default:
 		fb.Delay = fb.Slots[fb.Retries-2] + fb.Slots[fb.Retries-3]
 		fb.Slots = append(fb.Slots, fb.Delay)
-  }
+	}
 
 	return true
 }
