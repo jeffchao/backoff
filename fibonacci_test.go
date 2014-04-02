@@ -29,16 +29,13 @@ func TestRetryFibonacci(t *testing.T) {
 	f.Interval = 1 * time.Millisecond
 	f.MaxRetries = 5
 
-	retries := 0
-
 	test := func() error {
-		retries++
 		return errors.New("an error occurred")
 	}
 	f.Retry(test)
 
 	if f.Retries != f.MaxRetries {
-		t.Errorf("retries count does not match f.Retries: got %d, expected %d", f.Retries, f.MaxRetries)
+		t.Errorf("f.Retries does not match f.MaxRetries: got %d, expected %d", f.Retries, f.MaxRetries)
 	}
 
 	if f.Retries > f.MaxRetries {
