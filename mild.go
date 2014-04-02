@@ -110,13 +110,17 @@ func (m *MILDBackoff) decrement() {
 	m.Slots[len(m.Slots)-1] = time.Duration(0 * m.Interval)
 	m.Slots = m.Slots[:len(m.Slots)-1]
 	m.Retries--
-	m.Delay = m.Slots[len(m.Slots)-1]
+	if len(m.Slots) == 0 {
+		m.Delay = time.Duration(0 * m.Interval)
+	} else {
+		m.Delay = m.Slots[len(m.Slots)-1]
+	}
 }
 
 // Reset will reset the retry count, the backoff delay, and backoff slots back to its initial state.
 func (m *MILDBackoff) Reset() {
 	m.Retries = 0
-	m.Delay = time.Duration(0 * time.Second)
+	m.Delay = time.Duration(0 * m.Interval)
 	m.Slots = nil
 	m.Slots = make([]time.Duration, 0, m.MaxRetries)
 }
