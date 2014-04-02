@@ -27,3 +27,38 @@ func TestNextMILDBackoff(t *testing.T) {
 		assertEquals(t, expectedDelays[i], f.Delay)
 	}
 }
+
+func TestResetMILD(t *testing.T) {
+	m := MILD()
+	m.Interval = 1 * time.Second
+	m.MaxRetries = 5
+
+	for i := 0; i < 4; i++ {
+		m.Next()
+	}
+
+	assertEquals(t, m.Retries, 4)
+	m.Reset()
+	assertEquals(t, m.Retries, 0)
+	assertEquals(t, m.Delay, time.Duration(0*time.Second))
+}
+
+func TestDecrementMILD(t *testing.T) {
+	m := MILD()
+	m.Interval = 1 * time.Second
+	m.MaxRetries = 5
+
+	m.Next()
+	assertEquals(t, m.Retries, 1)
+	assertEquals(t, len(m.Slots), 1)
+	m.Next()
+	assertEquals(t, m.Retries, 2)
+	assertEquals(t, len(m.Slots), 2)
+	m.decrement()
+	assertEquals(t, m.Retries, 1)
+	assertEquals(t, len(m.Slots), 1)
+	m.decrement()
+	assertEquals(t, m.Retries, 0)
+	assertEquals(t, len(m.Slots), 0)
+
+}
