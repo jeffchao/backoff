@@ -41,21 +41,21 @@ This method maintains a slice of time.Duration to save on fibonacci computation.
 Example, given a 1 second interval:
 
   Retry #        Backoff delay (in seconds)
-    0                   0
-    1                   1
+    1                   0
     2                   1
-    3                   2
-    4                   3
-    5                   5
-    6                   8
-    7                   13
+    3                   1
+    4                   2
+    5                   3
+    6                   5
+    7                   8
+    8                   13
 */
 func (fb *FibonacciBackoff) Next() bool {
-	fb.Retries++
-
-	if fb.Retries > fb.MaxRetries {
+	if fb.Retries >= fb.MaxRetries {
 		return false
 	}
+
+	fb.Retries++
 
 	switch fb.Retries {
 	case 1:
