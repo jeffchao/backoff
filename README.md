@@ -99,22 +99,6 @@ err := f.Retry(fooFunc)
 f.Reset()
 ```
 
-### PLEB - Pessimistic Linear-Exponential Backoff
-
-WIP
-
-```go
-WIP
-```
-
-### PFB - Pessimistic Fibonacci Backoff
-
-WIP
-
-```go
-WIP
-```
-
 ## Author
 
 Jeff Chao, @thejeffchao, http://thejeffchao.com
