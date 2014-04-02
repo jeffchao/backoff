@@ -41,6 +41,32 @@ func TestRetryFibonacci(t *testing.T) {
 	if f.Retries > f.MaxRetries {
 		t.Errorf("overflow: retries %d greater than maximum retries %d", f.Retries, f.MaxRetries)
 	}
+
+	test = func() error {
+		return nil
+	}
+	f.Reset()
+	err := f.Retry(test)
+
+	if err != nil {
+		t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
+	}
+
+	retries := 0
+	f.Reset()
+	test = func() error {
+		if retries == 0 {
+			retries++
+			return errors.New("an error occurred")
+		}
+		return nil
+	}
+
+	f.Retry(test)
+
+	if err != nil {
+		t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
+	}
 }
 
 func TestResetFibonacci(t *testing.T) {
