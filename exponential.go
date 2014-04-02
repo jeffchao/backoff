@@ -44,13 +44,14 @@ Example, given a 1 second interval:
     2                   3
     3                   7
     4                   15
+    5                   31
 */
 func (e *ExponentialBackoff) Next() bool {
-	e.Retries++
-
 	if e.Retries >= e.MaxRetries {
 		return false
 	}
+
+	e.Retries++
 
 	e.Delay = time.Duration(math.Pow(2, float64(e.Retries))-1) * e.Interval
 

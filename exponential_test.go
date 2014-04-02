@@ -11,8 +11,8 @@ func TestNextExponentialBackoff(t *testing.T) {
 	e.Interval = 1 * time.Second
 	e.MaxRetries = 5
 
-	expectedRetries := []int{1, 2, 3, 4, 5, 6, 7}
-	expectedDelays := []time.Duration{1, 3, 7, 15, 15, 15, 15}
+	expectedRetries := []int{1, 2, 3, 4, 5, 5, 5}
+	expectedDelays := []time.Duration{1, 3, 7, 15, 31, 31, 31}
 	for i, v := range expectedDelays {
 		expectedDelays[i] = v * time.Second
 	}
@@ -29,16 +29,13 @@ func TestRetryExponential(t *testing.T) {
 	e.Interval = 1 * time.Millisecond
 	e.MaxRetries = 5
 
-	retries := 0
-
 	test := func() error {
-		retries++
 		return errors.New("an error occurred")
 	}
 	e.Retry(test)
 
-	if retries != e.Retries {
-		t.Errorf("retries count does not match e.Retries: got %d, expected %d", retries, e.Retries)
+	if e.Retries != e.MaxRetries {
+		t.Errorf("e.Retries does not match e.MaxRetries: got %d, expected %d", e.Retries, e.MaxRetries)
 	}
 
 	if e.Retries > e.MaxRetries {
@@ -46,10 +43,8 @@ func TestRetryExponential(t *testing.T) {
 	}
 
 	e.Reset()
-	retries = 0
 
 	test = func() error {
-		retries++
 		return nil
 	}
 
@@ -59,12 +54,13 @@ func TestRetryExponential(t *testing.T) {
 		t.Errorf("failure in retry logic. expected success but got a failure: %+v", err)
 	}
 
+	retries := 0
+
 	test = func() error {
 		if retries == 0 {
 			retries++
 			return errors.New("an error occurred")
 		}
-
 		return nil
 	}
 
