@@ -22,6 +22,7 @@ type <all backoff algorithms> struct {
         MaxRetries int
         Delay      time.Duration
         Interval   time.Duration    // time.Second, time.Millisecond, etc.
+        Slots      []time.Duration
 }
 ```
 
